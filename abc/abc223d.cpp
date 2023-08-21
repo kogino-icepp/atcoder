@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+
 #define rep(i, n) for (int i = 0; i < (n); i++)
 using namespace std;
 typedef long long ll;
@@ -34,5 +35,31 @@ struct UnionFind {
 
 int main(){
     int N,M;cin >> N >> M;
+    priority_queue<int,vector<int>,greater<int>> que;
+    vector<int> C(N+1,0);
+    vector<vector<int>> mp(N+1);
+    rep(i,M){
+        int A,B;cin >> A >> B;
+        C[B]++;
+        mp[A].push_back(B);
+    }
+    for(int i=1;i<=N;i++){
+        if(C[i]==0)que.push(i);
+    }
+    vector<int> ans;
+    while(!que.empty()){
+        int v = que.top();
+        que.pop();
+        ans.push_back(v);
+        for(auto nv:mp[v]){
+            C[nv]--;
+            if(C[nv]==0)que.push(nv);
+        }
+    }
+    if((int)ans.size()==N){
+        for(auto v:ans)cout << v << " ";
+        cout << endl;
+    }
+    else cout << -1 << endl;
     
 }
